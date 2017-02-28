@@ -60,16 +60,22 @@ function updateMovies(movie) {
       language: data.language,
       summary: data.summary
     });
+    console.log("33333333333333333333333333333333333333333333333333333333333333");
+    console.log(movie);
     var genres = movie.genres;
     if(genres && genres.length > 0) {
       var cateArray = [];
+      console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+      console.log(genres);
       genres.forEach(function(genre) {
         cateArray.push(function *() {
           var cat = yield Category.findOne({name: genre}).exec();
           if(cat) {
+            console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
             cat.movie.push(movie._id);
             yield cat.save();
           }else {
+            console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
             cat = new Category({
               name: genre,
               movies: [movie._id]
@@ -80,6 +86,9 @@ function updateMovies(movie) {
           }
         });
       });
+      co (function *() {
+        yield cateArray;
+      })
     }else {
       movie.save();
     }
@@ -124,13 +133,12 @@ exports.searchByDouban = function *(q)  {
         }
       });
     });
-    console.log("ccccccccccccccccccccccccccccccccccccccccc");
-    console.log(movies)
     yield queryArry;
     movies.forEach(function(movie) {
       console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
       updateMovies(movie)
     });
+
 
   }
   return movies;
