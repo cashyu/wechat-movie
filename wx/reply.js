@@ -19,12 +19,14 @@ exports.reply = function *(next){   //next用来向下传递流程
           '回复 游戏,进入游戏页面\n' + 
           '回复 电影名字,查询电影信息\n' + 
           '回复 语音(说出电影名),查询电影信息\n' + 
-          '也可以点击<a href="http://17f5a3c0.viphk.ngrok.org/movie">语音查电影</a>';
+          '也可以点击<a href="http://17f5a3c0.viphk.ngrok.org/wechat/movie">语音查电影</a>';
       }else if(message.Event === 'unsubscribe'){
           console.log('无情取关');
           this.body = '';
           //上报地理位置事件，如果用户同意了上报，则用户每次打开公众号，都会上报一次地理位置
       }else if(message.Event === 'LOCATION') {
+          console.log('111111111111111111111111111111');
+          console.log(message);
           this.body = '您上报的位置是：' + message.Latitude + '/' +
               message.Longitude + '-' + message.Precision;
           //点击了菜单
@@ -78,7 +80,7 @@ exports.reply = function *(next){   //next用来向下传递流程
           title: movie.title,
           description: movie.description,
           picUrl: movie.poster,
-          url: 'http://17f5a3c0.viphk.ngrok.org/movie/' + movie._id
+          url: 'http://17f5a3c0.viphk.ngrok.org/wechat/movie/' + movie._id
         });
       });
     }else {
@@ -123,7 +125,7 @@ exports.reply = function *(next){   //next用来向下传递流程
             title: movie.title,
             description: movie.title,
             picUrl: movie.poster,
-            url: 'http://17f5a3c0.viphk.ngrok.org/movie/' + movie._id
+            url: 'http://17f5a3c0.viphk.ngrok.org/wechat/movie/' + movie._id
           });
         });
       }else {

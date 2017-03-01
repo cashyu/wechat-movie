@@ -1,7 +1,4 @@
-var mongoose = require('mongoose')
-var Movie = mongoose.model('Movie')
-var Category = mongoose.model('Category')
-var Movie = require('../.api/movie');
+var Movie = require('../api/movie');
 
 // index page
 exports.index = function *(next) {
@@ -13,7 +10,7 @@ exports.index = function *(next) {
 }
 
 // search page
-exports.search = function(next) {
+exports.search = function *(next) {
   var catId = this.query.cat
   var q = this.query.q
   var page = parseInt(req.query.p, 10) || 0
@@ -36,7 +33,7 @@ exports.search = function(next) {
       movies: results
     })
   }else {
-    var movies = yield Movie.searchByName();
+    var movies = yield Movie.searchByName(q);
     var results = movies.slice(index, index + count)
 
     yield this.render('pages/results', {

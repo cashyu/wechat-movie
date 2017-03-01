@@ -16,8 +16,6 @@ exports.guess = function *(next) {
   var ticketData = yield wechatApi.fetchTicket(access_token);
   var ticket = ticketData.ticket;
   var url = this.href;
-  console.log("33333333333333333333333333");
-  console.log(url)
   var params = util.sign(ticket, url);
   console.log(params)
   yield this.render('wechat/game', params);
@@ -37,11 +35,8 @@ exports.find = function *(next) {
   var params = util.sign(ticket, url);
   var movie = yield Movie.searchById(id);
   params.movie = movie;  
-  console.log("fffffffffffffffffffffffffffffffffffff");
-  console.log(params.movie)
-
+  
   yield this.render('wechat/movie', params);
-
 };
 
 

@@ -5,6 +5,7 @@ var koa_request = require('koa-request');
 var Promise = require('bluebird');
 var request = Promise.promisify(require('request'));
 var _ = require('lodash');
+var co = require('co');
 
 // index page
 exports.findAll = function *() {
@@ -49,33 +50,22 @@ function updateMovies(movie) {
     url: 'https://api.douban.com/v2/movie/subject/' + movie.doubanId,
     json: true
   }
-  console.log("3333333333333333333333333333333333");
-  console.log(options)
   request(options).then(function(response){
-    console.log("222222222222222222222222222222222222222222222222222222222222");
-    console.log(response.body)
     var data = response.body;
     _.extend(movie, {
       country: data.countries[0],
-      language: data.language,
       summary: data.summary
     });
-    console.log("33333333333333333333333333333333333333333333333333333333333333");
-    console.log(movie);
     var genres = movie.genres;
     if(genres && genres.length > 0) {
       var cateArray = [];
-      console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
-      console.log(genres);
       genres.forEach(function(genre) {
         cateArray.push(function *() {
           var cat = yield Category.findOne({name: genre}).exec();
           if(cat) {
-            console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
             cat.movie.push(movie._id);
             yield cat.save();
           }else {
-            console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
             cat = new Category({
               name: genre,
               movies: [movie._id]
@@ -108,7 +98,6 @@ exports.searchByDouban = function *(q)  {
   if(data && data.subjects) {
     subjects = data.subjects;
   }
-  
   if(subjects.length > 0) {
     var queryArry = [];
 
@@ -135,7 +124,6 @@ exports.searchByDouban = function *(q)  {
     });
     yield queryArry;
     movies.forEach(function(movie) {
-      console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
       updateMovies(movie)
     });
 
