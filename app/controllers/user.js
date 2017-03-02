@@ -18,8 +18,6 @@ exports.signup = function *(next) {
   var _user = this.request.body.user
 
   var user = yield User.findOne({name: _user.name}).exec();
-  console.log('111111111111111111111111111111');
-  console.log(user)
   if (user) {
     this.redirect('/signin')
   }
@@ -42,11 +40,8 @@ exports.signin = function *(next) {
   if (!user) {
     this.redirect('/signup')
   }
-  console.log('dddddddddddddddddddddddddddddddddddddd');
-  console.log(user)
   var isMatch = yield user.comparePassword(password, user.password)
   if (isMatch) {
-    console.log('333333333333333333333')
     this.session.user = user
 
     this.redirect('/')

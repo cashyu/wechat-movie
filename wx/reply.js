@@ -80,7 +80,7 @@ exports.reply = function *(next){   //next用来向下传递流程
           title: movie.title,
           description: movie.description,
           picUrl: movie.poster,
-          url: 'http://17f5a3c0.viphk.ngrok.org/wechat/movie/' + movie._id
+          url: 'http://17f5a3c0.viphk.ngrok.org/wechat/jump/' + movie._id
         });
       });
     }else {
@@ -125,7 +125,7 @@ exports.reply = function *(next){   //next用来向下传递流程
             title: movie.title,
             description: movie.title,
             picUrl: movie.poster,
-            url: 'http://17f5a3c0.viphk.ngrok.org/wechat/movie/' + movie._id
+            url: 'http://17f5a3c0.viphk.ngrok.org/wechat/jump/' + movie._id
           });
         });
       }else {

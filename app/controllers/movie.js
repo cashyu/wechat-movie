@@ -10,8 +10,6 @@ var path = require('path')
 // detail page
 exports.detail = function *(next) {
   var id = this.params.id
-  console.log('fffffffffffffffffffffffffffffff')
-  console.log(this)
   yield Movie.update({_id: id}, {$inc: {pv: 1}}).exec();
 
   var movie = yield Movie.findOne({_id: id}).exec();
@@ -20,7 +18,6 @@ exports.detail = function *(next) {
     .populate('from', 'name')
     .populate('reply.from reply.to', 'name')
     .exec();
-
   yield this.render('pages/detail', {
     title: 'imooc 详情页',
     movie: movie,

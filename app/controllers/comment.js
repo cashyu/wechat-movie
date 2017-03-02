@@ -14,18 +14,20 @@ exports.save = function *(next) {
       to: _comment.tid,
       content: _comment.content
     }
-
     comment.reply.push(reply)
 
     yield comment.save();
 
-    this.redirect('/movie/' + movieId)
+    this.body = {success: 1};
   }
   else {
-    var comment = new Comment(_comment)
-
+    var comment = new Comment({
+      movie: _comment.movie,
+      from: _comment.from,
+      content: _comment.content
+    })
     yield comment.save(); 
 
-    this.redirect('/movie/' + movieId)
+    this.body = {success: 1};
   }
 }

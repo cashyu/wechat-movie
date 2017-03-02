@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 
 var dbUrl = 'mongodb://localhost/imooc';
+mongoose.Promise = global.Promise; 
 mongoose.connect(dbUrl)
 var models_path = __dirname + '/app/models'
 var walk = function(path) {
@@ -45,6 +46,7 @@ var Router = require('koa-router');
 var session = require('koa-session');
 var bodyParser = require('koa-bodyparser');
 var router = new Router();
+var User = mongoose.model('User');
 var game = require('./app/controllers/game');
 var wechat = require('./app/controllers/wechat');
 
@@ -60,7 +62,7 @@ app.use(views(__dirname + '/app/views', {
 
 
 app.use(function *(next){
-  var user = this.session;
+  var user = this.session.user;
   if(user && user._id){
     this.session.user = yield User.findOne({_id: user._id}).exec();
     this.state.user = this.session.user //将user作为本地变量传递给每个jade模板文件

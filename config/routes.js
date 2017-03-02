@@ -26,11 +26,15 @@ module.exports = function(router) {
 
   router.get('/wechat/movie', Game.guess); 
   router.get('/wechat/movie/:id', Game.find);
+  router.get('/wechat/jump/:id', Game.jump);
   router.get('/wx', Wechat.hear);
   router.post('/wx', Wechat.hear);
 
   // Movie                                                                       
   router.get('/movie/:id', Movie.detail);                                            
+  
+  // Comment                                                                     
+  router.post('/user/comment', User.signinRequired, Comment.save)                   
   /*
   router.get('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.new)
   router.get('/admin/movie/update/:id', User.signinRequired, User.adminRequired, Movie.update)
@@ -38,8 +42,6 @@ module.exports = function(router) {
   router.get('/admin/movie/list', User.signinRequired, User.adminRequired, Movie.list)
   router.delete('/admin/movie/list', User.signinRequired, User.adminRequired, Movie.del)
                                                                                  
-  // Comment                                                                     
-  router.post('/user/comment', User.signinRequired, Comment.save)                   
                                                                                  
   // Category                                                                    
   router.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new)
