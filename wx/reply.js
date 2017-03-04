@@ -31,8 +31,31 @@ exports.reply = function *(next){   //next用来向下传递流程
               message.Longitude + '-' + message.Precision;
           //点击了菜单
       }else if(message.Event === 'CLICK'){
-          this.body = '您点击了菜单：' + message.EventKey;
-          //扫描
+        var news = [];
+        if(message.EventKey === 'movie_hot') {
+          var movies = yield Movie.findHostMovies(-1, 10);
+
+          movies.forEach(function(movie) {
+            reply.push({
+              title: movie.title,
+              description: movie.title,
+              picUrl: movie.poster,
+              url: 'http://17f5a3c0.viphk.ngrok.org/wechat/jump/' + movie._id
+            });
+          });
+        }else if(message.EventKey === 'movie_cold') {
+          var movies = yield Movie.findHostMovies(-1, 10);
+
+          movies.forEach(function(movie) {
+            reply.push({
+              title: movie.title,
+              description: movie.title,
+              picUrl: movie.poster,
+              url: 'http://17f5a3c0.viphk.ngrok.org/wechat/jump/' + movie._id
+            });
+          });
+        }
+        //扫描
       }else if(message.Event === 'SCAN') {
           console.log('关注后扫二维码' + message.EventKey + ' ' +
               message.Ticket);
